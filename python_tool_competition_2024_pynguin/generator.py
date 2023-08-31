@@ -16,7 +16,7 @@ class PynguinTestGenerator(TestGenerator):
         """Generate a test for the specific target file.
 
         Args:
-            target_file: The `FileInfo` of the file to generate a test for.
+            target_file_info: The `FileInfo` of the file to generate a test for.
 
         Returns:
             Either a `TestGenerationSuccess` if it was successful, or a
