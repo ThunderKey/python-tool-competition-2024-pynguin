@@ -53,20 +53,36 @@ class PynguinTestGenerator(TestGenerator):
                 )
 
 
+def _set_pynguin_configuration(output_dir: str, target_file_info: FileInfo) -> None:
+    """Build and set the run configuration for Pynguin.
 
-def _set_pynguin_configuration(tempdir: str, target_file_info: FileInfo) -> None:
+    It will use the given `output_dir` to write the generated tests to.
+
+    Args:
+        output_dir: Path to directory where Pynguin will put its output
+        target_file_info: The `FileInfo` of the file to generate a test for
+    """
     pynguin_config = config.Configuration(
         project_path=str(target_file_info.config.targets_dir),
         module_name=target_file_info.module_name,
         test_case_output=config.TestCaseOutputConfiguration(
-            output_path=tempdir,
+            output_path=output_dir,
         ),
     )
     pynguin.set_configuration(pynguin_config)
 
 
-def _read_generated_tests(tempdir: str, target_file_info: FileInfo) -> str:
+def _read_generated_tests(pynguin_output_dir: str, target_file_info: FileInfo) -> str:
+    """Read the generated tests from Pynguin's output into a string.
+
+    Args:
+        pynguin_output_dir: Path to directory where Pynguin has put its output
+        target_file_info: The `FileInfo` of the file to generate a test for
+
+    Returns:
+        The generated tests as a string
+    """
     module_name = target_file_info.module_name.replace(".", "_")
     test_file_name = f"test_{module_name}.py"
-    with open(os.path.join(tempdir, test_file_name)) as f:
+    with open(os.path.join(pynguin_output_dir, test_file_name)) as f:
         return f.read()
