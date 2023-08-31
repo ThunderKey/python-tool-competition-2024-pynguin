@@ -32,10 +32,8 @@ class PynguinTestGenerator(TestGenerator):
             try:
                 pynguin_result = pynguin.run_pynguin()
             except BaseException as e:
-                print(e)
                 return TestGenerationFailure((e,), FailureReason.UNEXPECTED_ERROR)
 
-            print(target_file_info)
             if pynguin_result == pynguin.ReturnCode.OK:
                 return TestGenerationSuccess(
                     _read_generated_tests(tempdir, target_file_info)
