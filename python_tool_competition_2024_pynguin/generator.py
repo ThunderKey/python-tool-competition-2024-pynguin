@@ -1,4 +1,9 @@
 """A test generator using Pynguin."""
+import os
+import tempfile
+
+import pynguin.configuration as config
+import pynguin.generator as pynguin
 
 from python_tool_competition_2024.generation_results import (
     FailureReason,
@@ -22,3 +27,34 @@ class PynguinTestGenerator(TestGenerator):
             Either a `TestGenerationSuccess` if it was successful, or a
             `TestGenerationFailure` otherwise.
         """
+        with tempfile.TemporaryDirectory() as tempdir:
+            _set_pynguin_configuration(tempdir, target_file_info)
+            try:
+                pynguin_result = pynguin.run_pynguin()
+            except BaseException as e:
+                print(e)
+                return TestGenerationFailure((e,), FailureReason.UNEXPECTED_ERROR)
+
+            print(target_file_info)
+            if pynguin_result == pynguin.ReturnCode.OK:
+                return TestGenerationSuccess(
+                    _read_generated_tests(tempdir, target_file_info)
+                )
+
+
+def _set_pynguin_configuration(tempdir: str, target_file_info: FileInfo) -> None:
+    pynguin_config = config.Configuration(
+        project_path=str(target_file_info.config.targets_dir),
+        module_name=target_file_info.module_name,
+        test_case_output=config.TestCaseOutputConfiguration(
+            output_path=tempdir,
+        ),
+    )
+    pynguin.set_configuration(pynguin_config)
+
+
+def _read_generated_tests(tempdir: str, target_file_info: FileInfo) -> str:
+    module_name = target_file_info.module_name.replace(".", "_")
+    test_file_name = f"test_{module_name}.py"
+    with open(os.path.join(tempdir, test_file_name)) as f:
+        return f.read()
