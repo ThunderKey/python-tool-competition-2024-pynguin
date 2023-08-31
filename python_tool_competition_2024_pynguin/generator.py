@@ -40,6 +40,20 @@ class PynguinTestGenerator(TestGenerator):
                 return TestGenerationSuccess(
                     _read_generated_tests(tempdir, target_file_info)
                 )
+            elif pynguin_result == pynguin.ReturnCode.NO_TESTS_GENERATED:
+                return TestGenerationFailure(
+                    ("Pynguin did not generate any tests.",),
+                    FailureReason.NOTHING_GENERATED,
+                )
+            else:
+                return TestGenerationFailure(
+                    (
+                        "Incorrect configuration of Pynguin.",
+                        "Please check its configuration settings.",
+                    ),
+                    FailureReason.UNSUPPORTED_FEATURE_USED,
+                )
+
 
 
 def _set_pynguin_configuration(tempdir: str, target_file_info: FileInfo) -> None:
