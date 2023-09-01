@@ -1404,7 +1404,7 @@ typing-extensions = "^4.7.1"
 type = "git"
 url = "git@github.com:ThunderKey/python-tool-competition-2024.git"
 reference = "HEAD"
-resolved_reference = "189c3ecba94fa9a4394d2bee6995c079db682c07"
+resolved_reference = "c9276e7db8bd67c6a8b94353e861d89c0e8d37c0"
 
 [[package]]
 name = "pyyaml"
