@@ -1,13 +1,13 @@
 [tool.poetry]
 name = "python-tool-competition-2024-pynguin"
-version = "0.1.0"
+version = "0.1.1"
 description = "Python Tool Competition 2024 implementation using Pynguin"
 authors = ["Stephan Lukasczyk <stephan@pynguin.eu>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
 python = ">=3.10, <3.11"
-python-tool-competition-2024 = "^0.1.0"
+python-tool-competition-2024 = "^0.1.1"
 pynguin = "^0.34.0"
 
 [build-system]
