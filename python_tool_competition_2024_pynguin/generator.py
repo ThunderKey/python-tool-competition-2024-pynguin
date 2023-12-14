@@ -63,10 +63,19 @@ def _set_pynguin_configuration(output_dir: str, target_file_info: FileInfo) -> N
         target_file_info: The `FileInfo` of the file to generate a test for
     """
     pynguin_config = config.Configuration(
-        project_path=str(target_file_info.config.targets_dir),
         module_name=target_file_info.module_name,
+        project_path=str(target_file_info.config.targets_dir),
+        stopping=config.StoppingConfiguration(
+            maximum_search_time=350,
+        ),
         test_case_output=config.TestCaseOutputConfiguration(
+            allow_stale_assertions=True,
+            assertion_generation=config.AssertionGenerator.SIMPLE,
+            format_with_black=False,
             output_path=output_dir,
+        ),
+        type_inference=config.TypeInferenceConfiguration(
+            type_tracing=True,
         ),
     )
     pynguin.set_configuration(pynguin_config)
